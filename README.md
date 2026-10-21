@@ -32,6 +32,27 @@ are not affected. In testing, real 26–30 MB Notability lab reports became
 
 The settings page also shows how much space has been saved so far.
 
+## Files submitted before the plugin was installed
+
+A command-line script compresses PDFs that are already in assignment
+submissions. Run it from the Moodle directory as the web server user. Without
+`--run` it only lists what it would do:
+
+```
+php public/local/pdfcompress/cli/compress_existing.php                 # list everything over the size limit
+php public/local/pdfcompress/cli/compress_existing.php --courseid=12   # one course
+php public/local/pdfcompress/cli/compress_existing.php --cmid=345      # one assignment
+php public/local/pdfcompress/cli/compress_existing.php --courseid=12 --run
+```
+
+Other options: `--minsizemb=N`, `--dpi=N`, `--limit=N`, `--help`.
+
+For each file it compresses, it also deletes the annotation tool's combined
+copy of that submission (which still holds the old, large content). Moodle
+rebuilds the copy from the smaller file the next time the submission is
+opened for annotation. Teachers' annotations are stored separately and are
+kept.
+
 ## Requirements
 
 - Moodle 5.2 or 5.3.

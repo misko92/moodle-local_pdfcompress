@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_pdfcompress';
-$plugin->version   = 2026102100;
+$plugin->version   = 2026102101;
 $plugin->requires  = 2026042000; // Moodle 5.2.
 $plugin->supported = [502, 503];
 $plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.1.0';
+$plugin->release   = '0.2.0';

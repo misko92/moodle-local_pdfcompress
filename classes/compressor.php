@@ -38,15 +38,17 @@ class compressor {
      * Compress a stored PDF in place if it is big enough and the result is worth keeping.
      *
      * @param \stored_file $file
+     * @param int|null $dpi Resolution; defaults to the site setting.
+     * @param int|null $minsize Smallest file to touch, in bytes; defaults to the site setting.
      * @return \stdClass|null Log record if the file was replaced, null if it was left alone.
      */
-    public static function compress_stored_file(\stored_file $file): ?\stdClass {
+    public static function compress_stored_file(\stored_file $file, ?int $dpi = null, ?int $minsize = null): ?\stdClass {
         global $DB;
 
         if ($file->is_directory() || $file->is_external_file() || !self::is_pdf($file)) {
             return null;
         }
-        $minsize = max(0, (int) get_config('local_pdfcompress', 'minsizemb')) * 1024 * 1024;
+        $minsize ??= max(0, (int) get_config('local_pdfcompress', 'minsizemb')) * 1024 * 1024;
         if ($file->get_filesize() < $minsize) {
             return null;
         }
@@ -55,7 +57,7 @@ class compressor {
             return null;
         }
 
-        $dpi = (int) get_config('local_pdfcompress', 'dpi') ?: 200;
+        $dpi ??= (int) get_config('local_pdfcompress', 'dpi') ?: 200;
         $dir = make_request_directory();
         $in = $dir . '/in.pdf';
         $out = $dir . '/out.pdf';
